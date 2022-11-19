@@ -34,20 +34,22 @@ mem_build_dec(
 
 \item{year}{year, must be 2000, 2010, or 2020 (after August 2021)}
 
-\item{groups}{defaults to 'all', which gets pop and vap. If 'pop', only gets pop.
-If 'vap', only gets vap. Any other strings default to 'all'.}
+\item{groups}{defaults to \code{'all'}, which gets pop and vap. If \code{'pop'}, only gets pop.
+If \code{'vap'}, only gets vap. Allows for analogous seven category race with \code{'all7'}, \code{'pop7'}, and \code{'vap7'}.
+For counts for any part by race, you can supply \code{ap:race}, where race is in \code{c('black', 'white', 'aian', 'other', 'asian', 'nhpi')}.
+Anything that can't be matched defaults to \code{'all'}, so you can pass \code{''} to get \code{'all'}.}
 }
 \value{
 tibble with observations for each observation of the geography in the state
-or county. Data includes 2 sets of columns for each race or ethnicity category:
+or county. Data includes up to 2 sets of columns for each race or ethnicity category:
 population (pop) and voting age population (vap)
 }
 \description{
 Creates a dataset, using the decennial census information, with the
 standard variables used for redistricting. Creates a stable base for getting
-data from tidycensus for common calls in redistricting.
+data from \code{censusapi} for common calls in redistricting.
 }
-\section{Output columns are:}{
+\section{Default output columns are:}{
 \itemize{
 \item GEOID: Geographic Identifier
 \item NAME: Name of County
@@ -72,9 +74,8 @@ data from tidycensus for common calls in redistricting.
 \item geometry: sf geometry
 }
 
-Arguments for \code{geography} are not checked, so will fail with \code{tidycensus} errors if invalid.
-This is by design to avoid blocking usage that could become valid, especially following
-the 2020 Census data release.
+Arguments for \code{geography} are not checked, so will error if invalid.
+This is by design, to avoid blocking usage that could become valid.
 
 Currently valid options for \code{geography}:
 \itemize{
@@ -89,11 +90,10 @@ Currently valid options for \code{geography}:
 \item 'state legislative district (upper chamber)'
 \item 'state legislative district (lower chamber)'
 \item 'school district (unified)'
+\item 'school district (elementary)'
+\item 'school district (secondary)'
+\item 'voting district' may also work, though seems to be less reliable
 }
-
-Full options for \code{geography} that may or may not be valid depending on year and geometry
-are listed at:
-\href{https://walker-data.com/tidycensus/articles/basic-usage.html}{Kyle Walker's tidycensus site}.
 }
 
 \examples{
